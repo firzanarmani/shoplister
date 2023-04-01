@@ -1,10 +1,22 @@
-import { cleanEnv, port, str } from "envalid";
+import { type CleanedEnvAccessors, cleanEnv, port, str, url } from "envalid";
+import dotenv from "dotenv";
 
-const validateEnv = cleanEnv(process.env, {
-  NODE_ENV: str(),
-  PORT: port(),
+interface EnvVarTypes {
+  NODE_ENV: string;
+  PORT: number;
+  DATABASE_URL: string;
+}
 
-  DATABASE_URL: str(),
-});
+const validateEnv = (): Readonly<EnvVarTypes & CleanedEnvAccessors> => {
+  dotenv.config();
+
+  return cleanEnv(process.env, {
+    NODE_ENV: str({
+      choices: ["development", "test", "production", "staging"],
+    }),
+    PORT: port(),
+    DATABASE_URL: url(),
+  });
+};
 
 export default validateEnv;
