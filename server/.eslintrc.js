@@ -8,6 +8,14 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
+    project: "tsconfig.json",
   },
-  rules: {},
+  rules: {
+    "@typescript-eslint/restrict-template-expressions": [
+      "error",
+      {
+        allowNumber: true,
+      },
+    ],
+  },
 };

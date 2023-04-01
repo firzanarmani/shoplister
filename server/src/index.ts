@@ -2,8 +2,11 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import validateEnv from "@/utils/validateEnv";
 
 dotenv.config();
+
+const env = validateEnv;
 
 const PORT = process.env.PORT;
 
@@ -14,5 +17,5 @@ app.use(cors());
 app.use(express.json());
 
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+  console.log(`Listening on port ${env.PORT}`);
 });

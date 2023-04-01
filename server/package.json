@@ -9,12 +9,14 @@
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "tsc && tsc-alias",
     "start": "npm run build && cross-env NODE_ENV=production node dist/index.js",
-    "lint": "eslint --ext .ts src/",
-    "lint:fix": "npm run lint -- --fix"
+    "lint": "eslint --ignore-path .gitignore --ext .ts src/",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "prettier --write --ignore-path .gitignore \"**/*.+(js|ts|json)\""
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
+    "envalid": "^7.3.1",
     "express": "^4.18.2",
     "helmet": "^6.0.1"
   },
@@ -33,6 +35,9 @@
     "nodemon": "^2.0.22",
     "prettier": "^2.8.7",
     "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.5",
+    "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.5.0",
     "typescript": "^5.0.3"
   }
 }
