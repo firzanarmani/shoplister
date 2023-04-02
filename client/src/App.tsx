@@ -5,9 +5,7 @@ function App() {
     <div className="h-screen bg-white">
       <LoginButton
         botUsername="shoplisterapp_bot"
-        onAuthCallback={(data) => {
-          console.log(data);
-        }}
+        authCallbackUrl="/api/v1/login/"
         buttonSize="large"
         cornerRadius={10}
         requestAccess={"write"}
