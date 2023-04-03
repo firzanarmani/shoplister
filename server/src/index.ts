@@ -9,6 +9,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 import listsRouter from "./routers/lists.routes";
 import itemsRouter from "./routers/items.routes";
 import usersRouter from "./routers/users.routes";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(logger);
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/v1/auth", authRouter);
 app.use("/v1/lists", listsRouter);

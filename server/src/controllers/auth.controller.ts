@@ -1,6 +1,10 @@
 import dotenv from "dotenv";
 import validateEnv from "@/utils/validateEnv";
-import jwt, { type JwtPayload, type VerifyCallback } from "jsonwebtoken";
+import jwt, {
+  type Jwt,
+  type JwtPayload,
+  type VerifyCallback,
+} from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import { LoginDto } from "@/dtos/auth.dto";
 import { validate } from "class-validator";
@@ -30,7 +34,10 @@ export const login = asyncHandler(async (req, res) => {
   });
 
   if (foundUser === null) {
-    res.status(401).json({ message: "Unauthorized" });
+    res.status(401).json({
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      message: `Account does not exist with email ${loginDto.email}`,
+    });
     return;
   }
 
@@ -57,11 +64,9 @@ export const login = asyncHandler(async (req, res) => {
     }
   );
 
-  // await updateUser(foundUser.id, { ...foundUser, refreshToken });
-
   res.cookie("jwt", refreshToken, {
     httpOnly: true,
-    secure: true,
+    secure: env.isProduction,
     sameSite: "none",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
@@ -75,29 +80,38 @@ export const logout = asyncHandler(async (req, res) => {
     res.sendStatus(204);
     return;
   }
-  res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    sameSite: "none",
+    secure: env.isProduction,
+  });
   res.json({ message: "Logged out" });
 });
 
 export const refresh = asyncHandler(async (req, res) => {
   const cookies = req.cookies;
 
-  if (cookies !== undefined && cookies.jwt === undefined) {
+  if (
+    cookies === undefined ||
+    (cookies !== undefined && cookies.jwt === undefined)
+  ) {
     res.status(401).json({ message: "Unauthorized" });
     return;
   }
 
   const refreshToken = cookies.jwt;
 
-  const verifyCallback: VerifyCallback<JwtPayload> = async (error, decoded) => {
+  const verifyCallback: VerifyCallback<Jwt> = async (error, decoded) => {
     if (error !== null || decoded === undefined) {
       res.status(403).json({ message: "Forbidden" });
       return;
     }
 
+    const payload = decoded.payload as JwtPayload;
+
     const foundUser = await prisma.user.findUnique({
       where: {
-        email: decoded.email,
+        email: payload.email as string,
       },
     });
 
