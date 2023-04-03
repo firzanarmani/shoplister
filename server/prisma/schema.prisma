@@ -8,6 +8,35 @@ datasource db {
   relationMode = "prisma"
 }
 
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique @db.VarChar(128)
+  password  String   @db.VarChar(64)
+  name      String   @default(cuid()) @db.VarChar(64)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  inbox Item[] // To quickly add items without adding them into any particular lists
+  lists List[]
+  // TgAccount    TgAccount?
+}
+
+// model TgAccount {
+//   id             String   @id
+//   firstName      String   @db.VarChar(64)
+//   lastName       String?  @db.VarChar(64)
+//   username       String?  @db.VarChar(64)
+//   profilePicture String?  @db.VarChar(128)
+//   authDate       String   @db.VarChar(16)
+//   createdAt      DateTime @default(now())
+//   updatedAt      DateTime @updatedAt
+
+//   user   User   @relation(fields: [userId], references: [id])
+//   userId String @unique
+
+//   @@index([userId])
+// }
+
 model Item {
   id        String   @id @default(cuid())
   name      String
@@ -18,7 +47,11 @@ model Item {
   List   List?   @relation(fields: [listId], references: [id])
   listId String?
 
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
   @@index([listId])
+  @@index([userId])
 }
 
 model List {
@@ -28,4 +61,9 @@ model List {
   updatedAt DateTime @updatedAt
 
   items Item[]
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@index([userId])
 }

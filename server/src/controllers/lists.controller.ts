@@ -22,6 +22,7 @@ export const getLists = asyncHandler(async (_req, res, _next) => {
 export const createList = asyncHandler(async (req, res, _next) => {
   try {
     const createListDto = new CreateListDto();
+    createListDto.userId = req.body.userId;
     createListDto.name = req.body.name;
 
     const errors = await validate(createListDto);
@@ -35,7 +36,7 @@ export const createList = asyncHandler(async (req, res, _next) => {
     }
 
     const list: List = await prisma.list.create({
-      data: { name: createListDto.name },
+      data: { userId: createListDto.userId, name: createListDto.name },
     });
 
     res.status(201).json({ list: { name: list.name } });
@@ -65,6 +66,7 @@ export const getListById = asyncHandler(async (req, res, _next) => {
   }
 });
 
+// TODO Do we want to allow changing user?
 export const updateList = asyncHandler(async (req, res, _next) => {
   try {
     const updateListDto = new UpdateListDto();

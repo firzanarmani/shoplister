@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateItemDto {
   @IsString()
@@ -6,6 +6,7 @@ export class CreateItemDto {
   name: string;
 
   @IsString()
+  @IsOptional()
   details?: string;
 }
 
@@ -15,9 +16,10 @@ export class UpdateItemDto {
   id: string;
 
   @IsString()
-  @IsNotEmpty()
-  name: string;
+  @IsOptional()
+  name?: string;
 
   @IsString()
+  @IsOptional()
   details?: string;
 }

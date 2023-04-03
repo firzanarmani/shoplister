@@ -5,12 +5,15 @@ import {
   getLists,
   updateList,
 } from "@/controllers/lists.controller";
+import { verifyJWT } from "@/middlewares/verifyJWT";
 import { Router } from "express";
 
-const listRouter = Router();
+const listsRouter = Router();
 
-listRouter.route("/").get(getLists).post(createList);
+listsRouter.use(verifyJWT);
 
-listRouter.route("/:id").get(getListById).put(updateList).delete(deleteList);
+listsRouter.route("/").get(getLists).post(createList);
 
-export default listRouter;
+listsRouter.route("/:id").get(getListById).put(updateList).delete(deleteList);
+
+export default listsRouter;

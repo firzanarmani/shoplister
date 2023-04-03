@@ -5,12 +5,15 @@ import {
   getItems,
   updateItem,
 } from "@/controllers/items.controller";
+import { verifyJWT } from "@/middlewares/verifyJWT";
 import { Router } from "express";
 
-const itemRouter = Router();
+const itemsRouter = Router();
 
-itemRouter.route("/").get(getItems).post(createItem);
+itemsRouter.use(verifyJWT);
 
-itemRouter.route("/:id").get(getItemById).put(updateItem).delete(deleteItem);
+itemsRouter.route("/").get(getItems).post(createItem);
 
-export default itemRouter;
+itemsRouter.route("/:id").get(getItemById).put(updateItem).delete(deleteItem);
+
+export default itemsRouter;
