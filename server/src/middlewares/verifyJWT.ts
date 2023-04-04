@@ -26,7 +26,7 @@ export const verifyJWT = (
 
   jwt.verify(token, env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err !== null) {
-      res.sendStatus(403);
+      res.sendStatus(403).json({ message: "Forbidden" });
       return;
     }
 
