@@ -1,4 +1,8 @@
-import jwt, { type JwtPayload, type VerifyCallback } from "jsonwebtoken";
+import jwt, {
+  type Jwt,
+  type JwtPayload,
+  type VerifyCallback,
+} from "jsonwebtoken";
 import dotenv from "dotenv";
 import { type NextFunction, type Request, type Response } from "express";
 import validateEnv from "@/utils/validateEnv";
@@ -26,18 +30,17 @@ export const verifyJWT = (
       return;
     }
 
-    const verifyCallback: VerifyCallback<JwtPayload> = async (
-      error,
-      decoded
-    ) => {
+    const verifyCallback: VerifyCallback<Jwt> = async (error, decoded) => {
       if (error !== null || decoded === undefined) {
         res.status(403).json({ message: "Forbidden" });
         return;
       }
 
+      const payload = decoded.payload as JwtPayload;
+
       const foundUser = await prisma.user.findUnique({
         where: {
-          email: decoded.email,
+          email: payload.email as string,
         },
       });
 
@@ -46,8 +49,8 @@ export const verifyJWT = (
         return;
       }
 
-      req.email = decoded.email;
-      req.name = decoded.name;
+      req.email = foundUser.email;
+      req.name = foundUser.name;
     };
 
     jwt.verify(
