@@ -4,8 +4,9 @@ import Layout from "./components/Layout";
 import Public from "./components/Public";
 import Login from "./features/auth/Login";
 import DashboardLayout from "./components/Dashboard/DashboardLayout";
-import Welcome from "./features/auth/Welcome";
+import Dashboard from "./components/Dashboard/Dashboard";
 import Lists from "./features/lists/Lists";
+import Inbox from "./components/Dashboard/Inbox";
 
 function App(): ReactElement {
   return (
@@ -16,7 +17,8 @@ function App(): ReactElement {
         <Route path="login" element={<Login />} />
 
         <Route path="dashboard" element={<DashboardLayout />}>
-          <Route index element={<Welcome />} />
+          <Route index element={<Dashboard />} />
+          <Route path="inbox" element={<Inbox />} />
           <Route path="lists">
             <Route index element={<Lists />} />
           </Route>
