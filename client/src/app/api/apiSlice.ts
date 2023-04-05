@@ -11,7 +11,7 @@ import { setCredentials } from "../../features/auth/authSlice";
 // https://redux-toolkit.js.org/rtk-query/api/fetchBaseQuery#setting-default-headers-on-requests
 export const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/v1",
-  credentials: "include",
+  // credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
 
