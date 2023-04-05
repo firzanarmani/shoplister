@@ -10,10 +10,12 @@ import { Router } from "express";
 
 const usersRouter = Router();
 
-usersRouter.use(verifyJWT);
+usersRouter.route("/").get(verifyJWT, getUsers).post(createUser);
 
-usersRouter.route("/").get(getUsers).post(createUser);
-
-usersRouter.route("/:id").get(getUserById).put(updateUser).delete(deleteUser);
+usersRouter
+  .route("/:id")
+  .get(verifyJWT, getUserById)
+  .put(verifyJWT, updateUser)
+  .delete(verifyJWT, deleteUser);
 
 export default usersRouter;

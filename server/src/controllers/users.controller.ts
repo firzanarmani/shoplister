@@ -70,7 +70,7 @@ export const createUser = asyncHandler(async (req, res, _next) => {
 export const getUserById = asyncHandler(async (req, res, _next) => {
   try {
     const { id } = req.params;
-    const user = await prisma.user.findUnique({ where: { id } });
+    const user = await prisma.user.findUniqueOrThrow({ where: { id } });
 
     res.status(200).json({ user });
   } catch (e) {
@@ -85,14 +85,13 @@ export const getUserById = asyncHandler(async (req, res, _next) => {
 
 export const updateUser = asyncHandler(async (req, res, _next) => {
   try {
-    const updateUserDto = new UpdateUserDto();
-    updateUserDto.id = req.body.id;
-    updateUserDto.email = req.body.email;
-    updateUserDto.name = req.body.name;
+    const { id } = req.params;
+    const foundUser = await prisma.user.findUniqueOrThrow({ where: { id } });
 
-    if (updateUserDto.password !== undefined) {
-      updateUserDto.password = await bcrypt.hash(req.body.password, 10);
-    }
+    const updateUserDto = new UpdateUserDto();
+    updateUserDto.email = req.body.email;
+    updateUserDto.password = req.body.password;
+    updateUserDto.name = req.body.name;
 
     const errors = await validate(updateUserDto);
     if (errors.length > 0) {
@@ -104,8 +103,15 @@ export const updateUser = asyncHandler(async (req, res, _next) => {
       return;
     }
 
+    if (updateUserDto.password !== undefined) {
+      if (await bcrypt.compare(req.body.password, foundUser.password)) {
+        res.status(400).json({ error: "Enter a different password" });
+      }
+      updateUserDto.password = await bcrypt.hash(req.body.password, 10);
+    }
+
     const user: User = await prisma.user.update({
-      where: { id: updateUserDto.id },
+      where: { id },
       data: {
         email: updateUserDto.email,
         password: updateUserDto.password,
@@ -113,9 +119,7 @@ export const updateUser = asyncHandler(async (req, res, _next) => {
       },
     });
 
-    res
-      .status(201)
-      .json({ user: { email: updateUserDto.email, name: user.name } });
+    res.status(201).json({ user: { email: user.email, name: user.name } });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       res.status(400).json({ error: `${e.message} (${e.code})` });
@@ -129,9 +133,15 @@ export const updateUser = asyncHandler(async (req, res, _next) => {
 export const deleteUser = asyncHandler(async (req, res, next) => {
   try {
     const { id } = req.params;
-    const user = await prisma.user.delete({ where: { id } });
+    const foundUser = await prisma.user.findUniqueOrThrow({ where: { id } });
 
-    res.status(200).json({ user });
+    const user = await prisma.user.delete({ where: { id: foundUser.id } });
+
+    res.status(200).json({
+      user: { email: user.email, name: user.name },
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      message: `User with email ${user.email} has been deleted`,
+    });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       res.status(400).json({ error: `${e.message} (${e.code})` });
