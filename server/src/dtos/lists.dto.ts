@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { type Item } from "@prisma/client";
+import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
+
+export class GetListDto {
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
+}
 
 export class CreateListDto {
   @IsString()
@@ -18,4 +25,14 @@ export class UpdateListDto {
   @IsString()
   @IsOptional()
   name?: string;
+
+  @IsArray()
+  @IsOptional()
+  items?: Item[];
+}
+
+export class DeleteListDto {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
 }
