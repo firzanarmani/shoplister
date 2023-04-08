@@ -1,11 +1,18 @@
-import { IconLogout, IconMenu2, IconUserCircle } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconLogout,
+  IconMenu2,
+  IconUserCircle,
+} from "@tabler/icons-react";
 import { useEffect, type ReactElement } from "react";
 import { useRequestLogoutMutation } from "../../features/auth/authApiSlice";
 import { useNavigate } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
+import useAuth from "../../hooks/useAuth";
 
 function DashboardHeader(): ReactElement {
   const [requestLogout, { isSuccess }] = useRequestLogoutMutation();
+  const { email, name } = useAuth();
 
   const navigate = useNavigate();
 
@@ -54,9 +61,16 @@ function DashboardHeader(): ReactElement {
               <button
                 id="hs-dropdown-with-header"
                 type="button"
-                className="hs-dropdown-toggle inline-flex h-[2.375rem] w-[2.375rem] flex-shrink-0 items-center justify-center gap-2 rounded-full bg-white align-middle text-xs font-medium text-gray-700 transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-slate-800 dark:hover:text-white dark:focus:ring-gray-700 dark:focus:ring-offset-gray-800"
+                className="hs-dropdown-toggle inline-flex items-center justify-center gap-2 rounded-full border bg-white py-1 pl-1 pr-3 align-middle text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white dark:focus:ring-offset-gray-800"
               >
-                <IconUserCircle size={20} />
+                <IconUserCircle size={28} />
+                <span className="max-w-[7.5rem] truncate font-medium text-gray-600 dark:text-gray-400">
+                  {name}
+                </span>
+                <IconChevronDown
+                  size={16}
+                  className="text-gray-600 hs-dropdown-open:rotate-180 dark:text-gray-400"
+                />
               </button>
 
               <div
@@ -68,8 +82,7 @@ function DashboardHeader(): ReactElement {
                     Signed in as
                   </p>
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-300">
-                    {/* TODO Fetch user email from JWT */}
-                    james@site.com
+                    {email}
                   </p>
                 </div>
                 <div className="mt-2 py-2 first:pt-0 last:pb-0">
