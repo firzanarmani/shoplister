@@ -8,11 +8,12 @@ import {
 import { type RootState } from "../store";
 import { setCredentials } from "../../features/auth/authSlice";
 
+// https://redux-toolkit.js.org/rtk-query/usage/examples#dispatching-an-action-to-set-the-user-state
 // https://redux-toolkit.js.org/rtk-query/api/fetchBaseQuery#setting-default-headers-on-requests
 export const baseQuery = fetchBaseQuery({
   // eslint-disable-next-line no-template-curly-in-string
   baseUrl: import.meta.env.VITE_API_URL,
-  // credentials: "include",
+  credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
 
@@ -30,11 +31,15 @@ const baseQueryWithReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
+  // Try the initial query
   let result = await baseQuery(args, api, extraOptions);
   console.log(result);
 
+  // 403 Forbidden - Access token has expired
+  // TODO According to certain standards, this should be 401 Unauthorized instead
+  // TODO 403 Forbidden - Correct JWT token but you don't have access to the requested resource (e.g. logged in but not an admin)
   if (result.error !== undefined && result.error.status === 403) {
-    // try to get a new token
+    // Query /refresh to try and get a new access token
     const refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
 
     const refreshResultData = refreshResult.data as
@@ -42,12 +47,14 @@ const baseQueryWithReauth: BaseQueryFn<
       | undefined;
 
     if (refreshResultData !== undefined) {
-      // store the new token
+      // Store the new access token
       api.dispatch(setCredentials({ ...refreshResultData }));
 
-      // retry the initial query
+      // Then, retry the initial query
       result = await baseQuery(args, api, extraOptions);
     } else {
+      // Both access and refresh cookies have expired
+      // TODO This should also be a 401 Unauthorized
       if (
         refreshResult.error !== undefined &&
         refreshResult.error.status !== 403
