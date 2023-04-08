@@ -13,6 +13,14 @@ export const authsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
+      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          localStorage.setItem("userToken", data.accessToken);
+        } catch (e) {
+          console.log(e);
+        }
+      },
     }),
     requestLogout: builder.mutation({
       query: () => ({
