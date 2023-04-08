@@ -1,10 +1,4 @@
-import {
-  createList,
-  deleteList,
-  getListById,
-  getLists,
-  updateList,
-} from "@/controllers/lists.controller";
+import { ListsController } from "@/controllers/lists.controller";
 import { verifyJWT } from "@/middlewares/verifyJWT";
 import { Router } from "express";
 
@@ -12,8 +6,15 @@ const listsRouter = Router();
 
 listsRouter.use(verifyJWT);
 
-listsRouter.route("/").get(getLists).post(createList);
+listsRouter
+  .route("/")
+  .get(ListsController.getLists)
+  .post(ListsController.createList);
 
-listsRouter.route("/:id").get(getListById).put(updateList).delete(deleteList);
+listsRouter
+  .route("/:id")
+  .get(ListsController.getListById)
+  .put(ListsController.updateList)
+  .delete(ListsController.deleteList);
 
 export default listsRouter;

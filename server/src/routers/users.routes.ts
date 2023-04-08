@@ -1,21 +1,18 @@
-import {
-  createUser,
-  deleteUser,
-  getUserById,
-  getUsers,
-  updateUser,
-} from "@/controllers/users.controller";
+import { UsersController } from "@/controllers/users.controller";
 import { verifyJWT } from "@/middlewares/verifyJWT";
 import { Router } from "express";
 
 const usersRouter = Router();
 
-usersRouter.route("/").get(verifyJWT, getUsers).post(createUser);
+usersRouter
+  .route("/")
+  .get(verifyJWT, UsersController.getUsers)
+  .post(UsersController.createUser);
 
 usersRouter
   .route("/:id")
-  .get(verifyJWT, getUserById)
-  .put(verifyJWT, updateUser)
-  .delete(verifyJWT, deleteUser);
+  .get(verifyJWT, UsersController.getUserById)
+  .put(verifyJWT, UsersController.updateUser)
+  .delete(verifyJWT, UsersController.deleteUser);
 
 export default usersRouter;

@@ -9,7 +9,7 @@ import { type List, Prisma } from "@prisma/client";
 import { validate } from "class-validator";
 import asyncHandler from "express-async-handler";
 
-export const getLists = asyncHandler(async (req, res, _next) => {
+const getLists = asyncHandler(async (req, res, _next) => {
   try {
     const getListDto = new GetListDto();
     getListDto.userId = req.body.userId;
@@ -44,7 +44,7 @@ export const getLists = asyncHandler(async (req, res, _next) => {
   }
 });
 
-export const createList = asyncHandler(async (req, res, _next) => {
+const createList = asyncHandler(async (req, res, _next) => {
   try {
     const createListDto = new CreateListDto();
     createListDto.userId = req.body.userId;
@@ -87,7 +87,7 @@ export const createList = asyncHandler(async (req, res, _next) => {
   }
 });
 
-export const getListById = asyncHandler(async (req, res, _next) => {
+const getListById = asyncHandler(async (req, res, _next) => {
   try {
     const { id } = req.params;
     const list = await prisma.list.findUniqueOrThrow({
@@ -108,7 +108,7 @@ export const getListById = asyncHandler(async (req, res, _next) => {
 
 // TODO Do we want to allow changing user?
 // To change just the name
-export const updateList = asyncHandler(async (req, res, _next) => {
+const updateList = asyncHandler(async (req, res, _next) => {
   try {
     const updateListDto = new UpdateListDto();
     updateListDto.id = req.params.id;
@@ -143,7 +143,7 @@ export const updateList = asyncHandler(async (req, res, _next) => {
   }
 });
 
-export const deleteList = asyncHandler(async (req, res, next) => {
+const deleteList = asyncHandler(async (req, res, next) => {
   try {
     const deleteListDto = new DeleteListDto();
     deleteListDto.id = req.params.id;
@@ -169,3 +169,11 @@ export const deleteList = asyncHandler(async (req, res, next) => {
     });
   }
 });
+
+export const ListsController = {
+  getLists,
+  getListById,
+  createList,
+  updateList,
+  deleteList,
+};

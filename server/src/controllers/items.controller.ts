@@ -4,7 +4,7 @@ import { type Item, Prisma } from "@prisma/client";
 import { validate } from "class-validator";
 import asyncHandler from "express-async-handler";
 
-export const getItems = asyncHandler(async (_req, res, _next) => {
+const getItems = asyncHandler(async (_req, res, _next) => {
   try {
     const items = await prisma.item.findMany();
 
@@ -19,7 +19,7 @@ export const getItems = asyncHandler(async (_req, res, _next) => {
   }
 });
 
-export const createItem = asyncHandler(async (req, res, _next) => {
+const createItem = asyncHandler(async (req, res, _next) => {
   try {
     const createItemDto = new CreateItemDto();
     createItemDto.name = req.body.name;
@@ -50,7 +50,7 @@ export const createItem = asyncHandler(async (req, res, _next) => {
   }
 });
 
-export const getItemById = asyncHandler(async (req, res, _next) => {
+const getItemById = asyncHandler(async (req, res, _next) => {
   try {
     const { id } = req.params;
     const item = await prisma.item.findUnique({ where: { id } });
@@ -66,7 +66,7 @@ export const getItemById = asyncHandler(async (req, res, _next) => {
   }
 });
 
-export const updateItem = asyncHandler(async (req, res, _next) => {
+const updateItem = asyncHandler(async (req, res, _next) => {
   try {
     const updateItemDto = new UpdateItemDto();
     updateItemDto.id = req.body.id;
@@ -99,7 +99,7 @@ export const updateItem = asyncHandler(async (req, res, _next) => {
   }
 });
 
-export const deleteItem = asyncHandler(async (req, res, next) => {
+const deleteItem = asyncHandler(async (req, res, next) => {
   try {
     const { id } = req.params;
     const item = await prisma.item.delete({ where: { id } });
@@ -114,3 +114,11 @@ export const deleteItem = asyncHandler(async (req, res, next) => {
     });
   }
 });
+
+export const ItemsController = {
+  getItems,
+  getItemById,
+  createItem,
+  updateItem,
+  deleteItem,
+};

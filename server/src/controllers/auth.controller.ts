@@ -14,7 +14,7 @@ import bcrypt from "bcrypt";
 dotenv.config();
 const env = validateEnv();
 
-export const login = asyncHandler(async (req, res) => {
+const login = asyncHandler(async (req, res) => {
   const loginDto = new LoginDto();
   loginDto.email = req.body.email;
   loginDto.password = req.body.password;
@@ -74,7 +74,7 @@ export const login = asyncHandler(async (req, res) => {
   res.json({ accessToken });
 });
 
-export const logout = asyncHandler(async (req, res) => {
+const logout = asyncHandler(async (req, res) => {
   const cookies = req.cookies;
   if (cookies !== undefined && cookies.jwt === undefined) {
     res.sendStatus(204);
@@ -88,7 +88,7 @@ export const logout = asyncHandler(async (req, res) => {
   res.json({ message: "Logged out" });
 });
 
-export const refresh = asyncHandler(async (req, res) => {
+const refresh = asyncHandler(async (req, res) => {
   const cookies = req.cookies;
 
   if (
@@ -138,3 +138,5 @@ export const refresh = asyncHandler(async (req, res) => {
     verifyCallback
   );
 });
+
+export const AuthController = { login, logout, refresh };

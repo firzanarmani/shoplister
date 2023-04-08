@@ -1,10 +1,4 @@
-import {
-  createItem,
-  deleteItem,
-  getItemById,
-  getItems,
-  updateItem,
-} from "@/controllers/items.controller";
+import { ItemsController } from "@/controllers/items.controller";
 import { verifyJWT } from "@/middlewares/verifyJWT";
 import { Router } from "express";
 
@@ -12,8 +6,15 @@ const itemsRouter = Router();
 
 itemsRouter.use(verifyJWT);
 
-itemsRouter.route("/").get(getItems).post(createItem);
+itemsRouter
+  .route("/")
+  .get(ItemsController.getItems)
+  .post(ItemsController.createItem);
 
-itemsRouter.route("/:id").get(getItemById).put(updateItem).delete(deleteItem);
+itemsRouter
+  .route("/:id")
+  .get(ItemsController.getItemById)
+  .put(ItemsController.updateItem)
+  .delete(ItemsController.deleteItem);
 
 export default itemsRouter;

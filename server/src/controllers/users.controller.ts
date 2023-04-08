@@ -5,7 +5,7 @@ import { type User, Prisma } from "@prisma/client";
 import { validate } from "class-validator";
 import asyncHandler from "express-async-handler";
 
-export const getUsers = asyncHandler(async (_req, res, _next) => {
+const getUsers = asyncHandler(async (_req, res, _next) => {
   try {
     const users = await prisma.user.findMany();
 
@@ -20,7 +20,7 @@ export const getUsers = asyncHandler(async (_req, res, _next) => {
   }
 });
 
-export const createUser = asyncHandler(async (req, res, _next) => {
+const createUser = asyncHandler(async (req, res, _next) => {
   try {
     const createUserDto = new CreateUserDto();
     createUserDto.email = req.body.email;
@@ -67,7 +67,7 @@ export const createUser = asyncHandler(async (req, res, _next) => {
   }
 });
 
-export const getUserById = asyncHandler(async (req, res, _next) => {
+const getUserById = asyncHandler(async (req, res, _next) => {
   try {
     const { id } = req.params;
     const user = await prisma.user.findUniqueOrThrow({ where: { id } });
@@ -83,7 +83,7 @@ export const getUserById = asyncHandler(async (req, res, _next) => {
   }
 });
 
-export const updateUser = asyncHandler(async (req, res, _next) => {
+const updateUser = asyncHandler(async (req, res, _next) => {
   try {
     const { id } = req.params;
     const foundUser = await prisma.user.findUniqueOrThrow({ where: { id } });
@@ -130,7 +130,7 @@ export const updateUser = asyncHandler(async (req, res, _next) => {
   }
 });
 
-export const deleteUser = asyncHandler(async (req, res, next) => {
+const deleteUser = asyncHandler(async (req, res, next) => {
   try {
     const { id } = req.params;
     const foundUser = await prisma.user.findUniqueOrThrow({ where: { id } });
@@ -151,3 +151,11 @@ export const deleteUser = asyncHandler(async (req, res, next) => {
     });
   }
 });
+
+export const UsersController = {
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+};
