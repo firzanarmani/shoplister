@@ -24,42 +24,35 @@ export const verifyJWT = (
 
   const token = authHeader.split(" ")[1];
 
-  jwt.verify(token, env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-    if (err !== null) {
-      res.sendStatus(403).json({ message: "Forbidden" });
+  const verifyCallback: VerifyCallback<Jwt> = async (error, decoded) => {
+    if (error !== null || decoded === undefined) {
+      res.status(403).json({ message: "Forbidden" });
       return;
     }
 
-    const verifyCallback: VerifyCallback<Jwt> = async (error, decoded) => {
-      if (error !== null || decoded === undefined) {
-        res.status(403).json({ message: "Forbidden" });
-        return;
-      }
+    const payload = decoded.payload as JwtPayload;
 
-      const payload = decoded.payload as JwtPayload;
+    const foundUser = await prisma.user.findUnique({
+      where: {
+        email: payload.email as string,
+      },
+    });
 
-      const foundUser = await prisma.user.findUnique({
-        where: {
-          email: payload.email as string,
-        },
-      });
+    if (foundUser === null) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
 
-      if (foundUser === null) {
-        res.status(401).json({ message: "Unauthorized" });
-        return;
-      }
-
-      req.email = foundUser.email;
-      req.name = foundUser.name;
-    };
-
-    jwt.verify(
-      token,
-      env.ACCESS_TOKEN_SECRET,
-      { complete: true },
-      verifyCallback
-    );
+    req.email = foundUser.email;
+    req.name = foundUser.name;
 
     next();
-  });
+  };
+
+  jwt.verify(
+    token,
+    env.ACCESS_TOKEN_SECRET,
+    { complete: true },
+    verifyCallback
+  );
 };
