@@ -33,9 +33,8 @@ const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   // Try the initial query
   let result = await baseQuery(args, api, extraOptions);
-  console.log(result);
 
-  // 403 Forbidden - Access token has expired
+  // 403 Forbidden - Access token has expired (verifyJWT fails)
   // TODO According to certain standards, this should be 401 Unauthorized instead
   // TODO 403 Forbidden - Correct JWT token but you don't have access to the requested resource (e.g. logged in but not an admin)
   if (result.error !== undefined && result.error.status === 403) {
@@ -59,6 +58,7 @@ const baseQueryWithReauth: BaseQueryFn<
         refreshResult.error !== undefined &&
         refreshResult.error.status !== 403
       ) {
+        // TODO Redirect back to login?
         refreshResult.error.data = { message: "Login has expired" };
       }
 

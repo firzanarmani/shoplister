@@ -5,22 +5,29 @@ import Public from "./components/Public";
 import Login from "./features/auth/Login";
 import DashboardLayout from "./components/Dashboard/DashboardLayout";
 import Dashboard from "./components/Dashboard/Dashboard";
-import Lists from "./features/lists/Lists";
 import Inbox from "./components/Dashboard/Inbox";
+import List from "./features/lists/List";
+import RequireAuth from "./features/auth/RequireAuth";
+import Prefetch from "./features/auth/Prefetch";
 
 function App(): ReactElement {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
+        {/* Public routes */}
         <Route index element={<Public />} />
-
         <Route path="login" element={<Login />} />
 
-        <Route path="dashboard" element={<DashboardLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="inbox" element={<Inbox />} />
-          <Route path="lists">
-            <Route index element={<Lists />} />
+        {/* Protected routes */}
+        <Route element={<RequireAuth />}>
+          <Route element={<Prefetch />}>
+            <Route path="dashboard" element={<DashboardLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="inbox" element={<Inbox />} />
+              <Route path="lists">
+                <Route path=":id" element={<List />} />
+              </Route>
+            </Route>
           </Route>
         </Route>
       </Route>
