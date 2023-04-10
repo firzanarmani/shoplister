@@ -1,16 +1,25 @@
 import { type Item } from "@prisma/client";
 import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
+export class GetListsDto {
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+}
 export class GetListDto {
   @IsString()
   @IsNotEmpty()
-  userId: string;
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  id: string;
 }
 
 export class CreateListDto {
   @IsString()
   @IsNotEmpty()
-  userId: string;
+  email: string;
 
   @IsString()
   @IsNotEmpty()

@@ -2,6 +2,7 @@ import {
   CreateListDto,
   DeleteListDto,
   GetListDto,
+  GetListsDto,
   UpdateListDto,
 } from "@/dtos/lists.dto";
 import prisma from "@/lib/prisma";
@@ -11,10 +12,10 @@ import asyncHandler from "express-async-handler";
 
 const getLists = asyncHandler(async (req, res, _next) => {
   try {
-    const getListDto = new GetListDto();
-    getListDto.userId = req.body.userId;
+    const getListsDto = new GetListsDto();
+    getListsDto.email = req.email; // req.email after verifyJWT
 
-    const errors = await validate(getListDto);
+    const errors = await validate(getListsDto);
     if (errors.length > 0) {
       res.status(400).json({
         constraints: errors.map((error) => ({
@@ -26,7 +27,9 @@ const getLists = asyncHandler(async (req, res, _next) => {
 
     const lists = await prisma.list.findMany({
       where: {
-        userId: getListDto.userId,
+        user: {
+          email: getListsDto.email,
+        },
       },
       include: {
         items: true,
@@ -44,10 +47,43 @@ const getLists = asyncHandler(async (req, res, _next) => {
   }
 });
 
+const getListById = asyncHandler(async (req, res, _next) => {
+  try {
+    const getListDto = new GetListDto();
+    getListDto.email = req.email;
+    getListDto.id = req.params.id;
+
+    const errors = await validate(getListDto);
+    if (errors.length > 0) {
+      res.status(400).json({
+        constraints: errors.map((error) => ({
+          [error.property]: error.constraints,
+        })),
+      });
+      return;
+    }
+
+    const list = await prisma.list.findFirstOrThrow({
+      where: { id: getListDto.id, user: { email: getListDto.email } },
+      include: { items: true },
+    });
+
+    res.status(200).json({ list });
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      res.status(400).json({ error: `${e.message} (${e.code})` });
+      return;
+    }
+    res.status(500).json({
+      error: `Unexpected error while fetching list with ID ${req.params.id}`,
+    });
+  }
+});
+
 const createList = asyncHandler(async (req, res, _next) => {
   try {
     const createListDto = new CreateListDto();
-    createListDto.userId = req.body.userId;
+    createListDto.email = req.email;
     createListDto.name = req.body.name;
 
     const errors = await validate(createListDto);
@@ -62,7 +98,7 @@ const createList = asyncHandler(async (req, res, _next) => {
 
     const foundUser = await prisma.user.findUniqueOrThrow({
       where: {
-        id: createListDto.userId,
+        email: createListDto.email,
       },
     });
 
@@ -87,27 +123,6 @@ const createList = asyncHandler(async (req, res, _next) => {
   }
 });
 
-const getListById = asyncHandler(async (req, res, _next) => {
-  try {
-    const { id } = req.params;
-    const list = await prisma.list.findUniqueOrThrow({
-      where: { id },
-      include: { items: true },
-    });
-
-    res.status(200).json({ list });
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      res.status(400).json({ error: `${e.message} (${e.code})` });
-    }
-    res.status(500).json({
-      error: `Unexpected error while fetching list with ID ${req.params.id}`,
-    });
-  }
-});
-
-// TODO Do we want to allow changing user?
-// To change just the name
 const updateList = asyncHandler(async (req, res, _next) => {
   try {
     const updateListDto = new UpdateListDto();
@@ -157,6 +172,7 @@ const deleteList = asyncHandler(async (req, res, next) => {
       });
       return;
     }
+
     const list = await prisma.list.delete({ where: { id: deleteListDto.id } });
 
     res.status(200).json({ list });
