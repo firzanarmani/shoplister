@@ -49,14 +49,6 @@ function DashboardHeader(): ReactElement {
 
         <div className="ml-auto flex w-full items-center justify-end">
           <div className="flex flex-row items-center justify-end gap-2">
-            {/* TODO Use when notification are added */}
-            {/* <button
-              type="button"
-              className="inline-flex h-[2.375rem] w-[2.375rem] flex-shrink-0 items-center justify-center gap-2 rounded-full bg-white align-middle text-xs font-medium text-gray-700 transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-slate-800 dark:hover:text-white dark:focus:ring-gray-700 dark:focus:ring-offset-gray-800"
-            >
-              <IconBell size={20} />
-            </button> */}
-
             <div className="hs-dropdown relative inline-flex [--placement:bottom-right]">
               <button
                 id="hs-dropdown-with-header"
