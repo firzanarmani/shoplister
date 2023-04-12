@@ -6,17 +6,12 @@ import {
 import { apiSlice } from "../../app/api/apiSlice";
 import { type RootState } from "../../app/store";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
+import { type Item } from "../items/itemsApiSlice";
 
 export interface List {
   id: string;
   name: string;
   items: Item[];
-}
-
-export interface Item {
-  id: string;
-  name: string;
-  details?: string;
 }
 
 const listsAdapter = createEntityAdapter<List>({});
