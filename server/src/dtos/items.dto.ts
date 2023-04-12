@@ -3,6 +3,10 @@ import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 export class CreateItemDto {
   @IsString()
   @IsNotEmpty()
+  listId: string;
+
+  @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsString()
@@ -14,6 +18,10 @@ export class UpdateItemDto {
   @IsString()
   @IsNotEmpty()
   id: string;
+
+  @IsString()
+  @IsOptional()
+  listId?: string;
 
   @IsString()
   @IsOptional()
