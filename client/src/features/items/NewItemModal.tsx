@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconX } from "@tabler/icons-react";
+import { IconExclamationCircle, IconX } from "@tabler/icons-react";
 import { useRef, type ReactElement } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
@@ -7,7 +7,10 @@ import { useAddItemMutation } from "./itemsApiSlice";
 
 const schema = z.object({
   title: z.string().min(1, "Cannot be empty"),
-  details: z.string().optional(),
+  details: z
+    .string()
+    .optional()
+    .transform((e) => (e?.trim() === "" ? undefined : e)),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -100,25 +103,55 @@ function NewItemModal({ listId }: { listId: string }): ReactElement {
                       />
                       <div
                         id="titleErrorIcon"
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-red-600"
                       >
                         {errors.title !== undefined ? (
-                          <svg
-                            className="h-5 w-5 text-red-500"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            aria-hidden="true"
-                          >
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                          </svg>
+                          <IconExclamationCircle size={20} />
                         ) : null}
                       </div>
                     </div>
                     {errors.title !== undefined ? (
                       <p id="titleErrors" className="mt-2 text-xs text-red-600">
                         {errors.title.message}
+                      </p>
+                    ) : null}
+                  </div>
+
+                  <div id="detailsGroup">
+                    <label
+                      id="detailsLabel"
+                      htmlFor="details"
+                      className="mb-2 block text-sm dark:text-white"
+                    >
+                      Details
+                    </label>
+                    <div id="detailsInputGroup" className="relative">
+                      <input
+                        id="detailsInput"
+                        type="details"
+                        className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                        placeholder="Optional"
+                        aria-describedby="title-error"
+                        aria-invalid={
+                          errors.title !== undefined ? "true" : "false"
+                        }
+                        {...register("details")}
+                      />
+                      <div
+                        id="detailsErrorIcon"
+                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-red-600"
+                      >
+                        {errors.details !== undefined ? (
+                          <IconExclamationCircle size={16} />
+                        ) : null}
+                      </div>
+                    </div>
+                    {errors.details !== undefined ? (
+                      <p
+                        id="detailsErrors"
+                        className="mt-2 text-xs text-red-600"
+                      >
+                        {errors.details.message}
                       </p>
                     ) : null}
                   </div>

@@ -19,9 +19,9 @@ function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
 
   return (
     <>
-      <tr className="h-px w-px whitespace-nowrap">
-        <div className="group/row flex">
-          <td className="flex-0">
+      <div className="group/row flex w-full flex-col whitespace-nowrap border-b border-gray-200 dark:border-gray-700">
+        <div className="flow-row flex w-full">
+          <div className="flex-0">
             <div className="py-2">
               {/* TODO Completed state toggle */}
               <label
@@ -36,15 +36,17 @@ function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
                 <span className="sr-only">Checkbox</span>
               </label>
             </div>
-          </td>
-          <td className="flex-1">
-            <div className="px-2 py-2">
+          </div>
+
+          <div className="flex-1">
+            <div className="p-2">
               <span className="text-sm text-gray-600 dark:text-gray-400">
                 {item.name}
               </span>
             </div>
-          </td>
-          <td className="flex-0">
+          </div>
+
+          <div className="flex-0">
             <div className="flex justify-end py-1.5">
               <div className="group inline-flex items-center rounded-md shadow-sm">
                 <div className="hs-dropdown relative inline-flex [--placement:bottom-right]">
@@ -84,9 +86,17 @@ function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
                 </div>
               </div>
             </div>
-          </td>
+          </div>
         </div>
-      </tr>
+
+        {item.details !== undefined && item.details !== null ? (
+          <div className="px-2 pb-2 pl-6">
+            <span className="text-xs text-gray-700 dark:text-gray-500">
+              {item.details}
+            </span>
+          </div>
+        ) : null}
+      </div>
 
       <UpdateItemModal listId={listId} item={item} />
     </>
@@ -189,13 +199,9 @@ function List(): ReactElement {
         </div>
 
         <div className="px-6">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {list.items.map((item) => (
-                <Row key={item.id} item={item} listId={list.id} />
-              ))}
-            </tbody>
-          </table>
+          {list.items.map((item) => (
+            <Row key={item.id} item={item} listId={list.id} />
+          ))}
         </div>
 
         <UpdateListModal id={list.id} originalTitle={list.name} />
