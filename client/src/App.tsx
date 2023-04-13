@@ -9,6 +9,7 @@ import Inbox from "./components/Dashboard/Inbox";
 import List from "./features/lists/List";
 import RequireAuth from "./features/auth/RequireAuth";
 import Prefetch from "./features/auth/Prefetch";
+import Register from "./features/users/Register";
 
 function App(): ReactElement {
   return (
@@ -17,6 +18,7 @@ function App(): ReactElement {
         {/* Public routes */}
         <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
 
         {/* Protected routes */}
         <Route element={<RequireAuth />}>
