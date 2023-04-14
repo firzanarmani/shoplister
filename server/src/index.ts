@@ -4,14 +4,14 @@ import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
 
-import authRouter from "@/routers/auth.routes";
+import authRouter from "@/routes/auth.routes";
 import validateEnv from "@/utils/validateEnv";
 
 import { errorHandler } from "./middlewares/errorHandler";
 import { logger } from "./middlewares/logger";
-import itemsRouter from "./routers/items.routes";
-import listsRouter from "./routers/lists.routes";
-import usersRouter from "./routers/users.routes";
+import itemsRouter from "./routes/items.routes";
+import listsRouter from "./routes/lists.routes";
+import usersRouter from "./routes/users.routes";
 
 dotenv.config();
 
