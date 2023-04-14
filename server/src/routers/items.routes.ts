@@ -1,6 +1,7 @@
+import { Router } from "express";
+
 import { ItemsController } from "@/controllers/items.controller";
 import { verifyJWT } from "@/middlewares/verifyJWT";
-import { Router } from "express";
 
 const itemsRouter = Router();
 

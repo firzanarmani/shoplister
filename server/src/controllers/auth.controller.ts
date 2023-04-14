@@ -1,15 +1,16 @@
+import bcrypt from "bcrypt";
+import { validate } from "class-validator";
 import dotenv from "dotenv";
-import validateEnv from "@/utils/validateEnv";
+import asyncHandler from "express-async-handler";
 import jwt, {
   type Jwt,
   type JwtPayload,
   type VerifyCallback,
 } from "jsonwebtoken";
-import asyncHandler from "express-async-handler";
+
 import { LoginDto } from "@/dtos/auth.dto";
-import { validate } from "class-validator";
 import prisma from "@/lib/prisma";
-import bcrypt from "bcrypt";
+import validateEnv from "@/utils/validateEnv";
 
 dotenv.config();
 const env = validateEnv();

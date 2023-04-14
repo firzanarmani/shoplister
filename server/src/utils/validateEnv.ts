@@ -1,5 +1,5 @@
-import { type CleanedEnvAccessors, cleanEnv, port, str, url } from "envalid";
 import dotenv from "dotenv";
+import { type CleanedEnvAccessors, cleanEnv, port, str, url } from "envalid";
 
 interface EnvVarTypes {
   NODE_ENV: string;

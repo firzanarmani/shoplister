@@ -1,3 +1,7 @@
+import { type List, Prisma } from "@prisma/client";
+import { validate } from "class-validator";
+import asyncHandler from "express-async-handler";
+
 import {
   CreateListDto,
   DeleteListDto,
@@ -6,9 +10,6 @@ import {
   UpdateListDto,
 } from "@/dtos/lists.dto";
 import prisma from "@/lib/prisma";
-import { type List, Prisma } from "@prisma/client";
-import { validate } from "class-validator";
-import asyncHandler from "express-async-handler";
 
 const getLists = asyncHandler(async (req, res, _next) => {
   try {

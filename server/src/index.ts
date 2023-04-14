@@ -1,15 +1,17 @@
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import cors from "cors";
 import helmet from "helmet";
-import validateEnv from "@/utils/validateEnv";
+
 import authRouter from "@/routers/auth.routes";
-import { logger } from "./middlewares/logger";
+import validateEnv from "@/utils/validateEnv";
+
 import { errorHandler } from "./middlewares/errorHandler";
-import listsRouter from "./routers/lists.routes";
+import { logger } from "./middlewares/logger";
 import itemsRouter from "./routers/items.routes";
+import listsRouter from "./routers/lists.routes";
 import usersRouter from "./routers/users.routes";
-import cookieParser from "cookie-parser";
 
 dotenv.config();
 

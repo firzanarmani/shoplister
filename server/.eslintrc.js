@@ -10,6 +10,7 @@ module.exports = {
     sourceType: "module",
     project: "tsconfig.json",
   },
+  plugins: ["simple-import-sort", "import"],
   rules: {
     "@typescript-eslint/restrict-template-expressions": [
       "error",
@@ -23,5 +24,10 @@ module.exports = {
         checksVoidReturn: false,
       },
     ],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
   },
 };

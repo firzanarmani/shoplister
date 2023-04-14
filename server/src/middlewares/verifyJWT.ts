@@ -1,12 +1,13 @@
+import dotenv from "dotenv";
+import { type NextFunction, type Request, type Response } from "express";
 import jwt, {
   type Jwt,
   type JwtPayload,
   type VerifyCallback,
 } from "jsonwebtoken";
-import dotenv from "dotenv";
-import { type NextFunction, type Request, type Response } from "express";
-import validateEnv from "@/utils/validateEnv";
+
 import prisma from "@/lib/prisma";
+import validateEnv from "@/utils/validateEnv";
 
 dotenv.config();
 const env = validateEnv();

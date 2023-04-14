@@ -1,8 +1,9 @@
-import { CreateItemDto, UpdateItemDto } from "@/dtos/items.dto";
-import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { validate } from "class-validator";
 import asyncHandler from "express-async-handler";
+
+import { CreateItemDto, UpdateItemDto } from "@/dtos/items.dto";
+import prisma from "@/lib/prisma";
 
 const getItems = asyncHandler(async (_req, res, _next) => {
   try {

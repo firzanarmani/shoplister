@@ -1,4 +1,5 @@
-import { type Request, type Response, type NextFunction } from "express";
+import { type NextFunction,type Request, type Response } from "express";
+
 import { logEvents } from "./logger";
 
 export const errorHandler = (
