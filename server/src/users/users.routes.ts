@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { UsersController } from "@/controllers/users.controller";
 import { verifyJWT } from "@/middlewares/verifyJWT";
+import { UsersController } from "@/users/users.controller";
 
 const usersRouter = Router();
 

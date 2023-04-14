@@ -1,10 +1,10 @@
-import { Prisma,type User } from "@prisma/client";
+import { Prisma, type User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { validate } from "class-validator";
 import asyncHandler from "express-async-handler";
 
-import { CreateUserDto, UpdateUserDto } from "@/dtos/users.dto";
-import prisma from "@/lib/prisma";
+import prisma from "@/libs/prisma";
+import { CreateUserDto, UpdateUserDto } from "@/users/users.dto";
 
 const getUsers = asyncHandler(async (_req, res, _next) => {
   try {

@@ -107,7 +107,11 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "paths": {
       "@/*": ["*"],
-      "@/routers/*": ["routers/*"]
+      "@/controllers/*": ["controllers/*"],
+      "@/dtos/*": ["dtos/*"],
+      "@/middlewares/*": ["middlewares/*"],
+      "@/routers/*": ["routers/*"],
+      "@/utils/*": ["utils/*"]
     }
   },
   "include": ["src"],

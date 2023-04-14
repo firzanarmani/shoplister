@@ -1,4 +1,5 @@
-import { type NextFunction,type Request, type Response } from "express";
+import { type NextFunction, type Request, type Response } from "express";
+import { HttpError } from "http-errors";
 
 import { logEvents } from "./logger";
 
@@ -14,11 +15,13 @@ export const errorHandler = (
     }`,
     "errLog.log"
   );
+
   console.log(err.stack);
 
-  const status = res.statusCode ?? 500;
+  if (err instanceof HttpError) {
+    res.status(err.statusCode).json({ message: err.message });
+    return;
+  }
 
-  res.status(status);
-
-  res.json({ message: err.message });
+  res.status(500).json({ message: err.message });
 };

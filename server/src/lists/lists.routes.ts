@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { ListsController } from "@/controllers/lists.controller";
+import { ListsController } from "@/lists/lists.controller";
 import { verifyJWT } from "@/middlewares/verifyJWT";
 
 const listsRouter = Router();

@@ -4,14 +4,13 @@ import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
 
-import authRouter from "@/routes/auth.routes";
+import authRouter from "@/auth/auth.routes";
+import itemsRouter from "@/items/items.routes";
+import listsRouter from "@/lists/lists.routes";
+import { errorHandler } from "@/middlewares/errorHandler";
+import { logger } from "@/middlewares/logger";
+import usersRouter from "@/users/users.routes";
 import validateEnv from "@/utils/validateEnv";
-
-import { errorHandler } from "./middlewares/errorHandler";
-import { logger } from "./middlewares/logger";
-import itemsRouter from "./routes/items.routes";
-import listsRouter from "./routes/lists.routes";
-import usersRouter from "./routes/users.routes";
 
 dotenv.config();
 
@@ -37,3 +36,5 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+export default app;

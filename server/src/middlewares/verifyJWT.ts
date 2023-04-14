@@ -6,7 +6,7 @@ import jwt, {
   type VerifyCallback,
 } from "jsonwebtoken";
 
-import prisma from "@/lib/prisma";
+import prisma from "@/libs/prisma";
 import validateEnv from "@/utils/validateEnv";
 
 dotenv.config();
@@ -18,16 +18,17 @@ export const verifyJWT = (
   next: NextFunction
 ): void => {
   const authHeader = req.headers.authorization;
+
   if (authHeader === undefined) {
-    res.sendStatus(401);
+    res.send(401).json({ message: "Missing token" });
     return;
   }
 
-  const token = authHeader.split(" ")[1];
+  const accessToken = authHeader.split(" ")[1];
 
   const verifyCallback: VerifyCallback<Jwt> = async (error, decoded) => {
     if (error !== null || decoded === undefined) {
-      res.status(403).json({ message: "Forbidden" });
+      res.status(401).json({ message: "Invalid token" });
       return;
     }
 
@@ -51,7 +52,7 @@ export const verifyJWT = (
   };
 
   jwt.verify(
-    token,
+    accessToken,
     env.ACCESS_TOKEN_SECRET,
     { complete: true },
     verifyCallback
