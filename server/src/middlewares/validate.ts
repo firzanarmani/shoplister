@@ -11,6 +11,8 @@ export const validate =
         body: req.body,
         query: req.query,
         params: req.params,
+        email: req.email,
+        name: req.name,
       });
       next();
     } catch (error) {
