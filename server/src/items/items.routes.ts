@@ -7,14 +7,10 @@ const itemsRouter = Router();
 
 itemsRouter.use(verifyJWT);
 
-itemsRouter
-  .route("/")
-  .get(ItemsController.getItems)
-  .post(ItemsController.createItem);
+itemsRouter.route("/").post(ItemsController.createItem);
 
 itemsRouter
   .route("/:id")
-  .get(ItemsController.getItemById)
   .put(ItemsController.updateItem)
   .delete(ItemsController.deleteItem);
 
