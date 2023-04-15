@@ -6,6 +6,7 @@ import jwt, {
   type VerifyCallback,
 } from "jsonwebtoken";
 
+import { type Login, type Register } from "@/auth/auth.schema";
 import { AuthService } from "@/auth/auth.service";
 import prisma from "@/libs/prisma";
 import { UsersService } from "@/users/users.service";
@@ -14,19 +15,21 @@ import validateEnv from "@/utils/validateEnv";
 dotenv.config();
 const env = validateEnv();
 
-const register = asyncHandler(async (req, res, next) => {
-  try {
-    const createdUser = await UsersService.createUser(req.body);
+const register = asyncHandler<unknown, unknown, Register>(
+  async (req, res, next) => {
+    try {
+      const createdUser = await UsersService.createUser(req.body);
 
-    res
-      .status(201)
-      .json({ user: { email: createdUser.email, name: createdUser.name } });
-  } catch (error) {
-    next(error);
+      res
+        .status(201)
+        .json({ user: { email: createdUser.email, name: createdUser.name } });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-const login = asyncHandler(async (req, res, next) => {
+const login = asyncHandler<unknown, unknown, Login>(async (req, res, next) => {
   try {
     const user = await UsersService.findUserByEmail(req.body.email);
 
@@ -57,7 +60,7 @@ const login = asyncHandler(async (req, res, next) => {
   }
 });
 
-const logout = asyncHandler(async (req, res, next) => {
+const logout = asyncHandler(async (req, res) => {
   const cookies = req.cookies;
 
   if (cookies !== undefined && cookies.jwt === undefined) {
