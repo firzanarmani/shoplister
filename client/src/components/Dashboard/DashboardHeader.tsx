@@ -5,13 +5,13 @@ import {
   IconUserCircle,
 } from "@tabler/icons-react";
 import { useEffect, type ReactElement } from "react";
-import { useRequestLogoutMutation } from "../../features/auth/authApiSlice";
+import { useLogoutMutation } from "../../features/auth/authApiSlice";
 import { useNavigate } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import useAuth from "../../hooks/useAuth";
 
 function DashboardHeader(): ReactElement {
-  const [requestLogout, { isSuccess }] = useRequestLogoutMutation();
+  const [logout, { isSuccess }] = useLogoutMutation();
   const { email, name } = useAuth();
 
   const navigate = useNavigate();
@@ -82,7 +82,7 @@ function DashboardHeader(): ReactElement {
                     className="flex cursor-pointer items-center gap-x-3.5 rounded-md px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                     onClick={(e) => {
                       e.preventDefault();
-                      void requestLogout(skipToken);
+                      void logout(skipToken);
                     }}
                   >
                     <IconLogout size={16} />

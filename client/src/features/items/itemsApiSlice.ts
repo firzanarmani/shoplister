@@ -53,9 +53,12 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
       },
     }),
     deleteItem: builder.mutation<Item, { id: string; listId: string }>({
-      query: ({ id }) => ({
+      query: ({ id, listId }) => ({
         url: `/items/${id}`,
         method: "DELETE",
+        body: {
+          listId,
+        },
       }),
       invalidatesTags: (result, error, args) => [
         { type: "List", id: args.listId },

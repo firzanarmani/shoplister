@@ -4,6 +4,16 @@ import { logout, setCredentials } from "./authSlice";
 
 export const authsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    register: builder.mutation<
+      { user: { email: string; name: string } },
+      { email: string; password: string; name: string }
+    >({
+      query: (credentials) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: { ...credentials },
+      }),
+    }),
     login: builder.mutation<
       { accessToken: string },
       { email: string; password: string }
@@ -22,7 +32,7 @@ export const authsApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
-    requestLogout: builder.mutation({
+    logout: builder.mutation({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
@@ -56,7 +66,8 @@ export const authsApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
+  useRegisterMutation,
   useLoginMutation,
-  useRequestLogoutMutation,
+  useLogoutMutation,
   useRefreshMutation,
 } = authsApiSlice;

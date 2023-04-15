@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useRegisterMutation } from "./usersApiSlice";
+import { useRegisterMutation } from "./authApiSlice";
 import { useRef, type ReactElement } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
