@@ -11,13 +11,11 @@ const findUserByEmail = async (email: string): Promise<User> => {
   });
 
   if (foundUser === null) {
-    throw createHttpError(401, `Account does not exist with specified email`);
+    throw createHttpError(401, `Account with specified email does not exist`);
   }
 
   return foundUser;
 };
-
-const checkUserExistsByEmail = async (email: string): Promise<void> => {};
 
 const createUser = async ({
   email,
@@ -47,6 +45,5 @@ const createUser = async ({
 
 export const UsersService = {
   findUserByEmail,
-  checkUserExistsByEmail,
   createUser,
 };
