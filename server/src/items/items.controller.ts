@@ -21,7 +21,8 @@ const createItem = asyncHandler<unknown, unknown, CreateItemBody>(
       const item = await ItemsService.createItem(
         list,
         req.body.name,
-        req.body.details
+        req.body.details,
+        req.body.completed
       );
 
       res.status(201).json({ item });
@@ -44,10 +45,11 @@ const updateItem = asyncHandler<UpdateItemParams, unknown, UpdateItemBody>(
       const updatedItem = await ItemsService.updateItem(
         item,
         req.body.name,
-        req.body.details
+        req.body.details,
+        req.body.completed
       );
 
-      res.status(201).json({ updatedItem });
+      res.status(200).json({ updatedItem });
     } catch (error) {
       next(error);
     }

@@ -29,7 +29,8 @@ const getItemById = async (
 const createItem = async (
   list: List,
   name: string,
-  details?: string
+  details?: string,
+  completed?: boolean
 ): Promise<Item> => {
   const item = await prisma.item.create({
     data: {
@@ -38,6 +39,7 @@ const createItem = async (
       },
       name,
       details,
+      completed,
     },
   });
 
@@ -47,11 +49,12 @@ const createItem = async (
 const updateItem = async (
   item: Item,
   name?: string,
-  details?: string
+  details?: string,
+  completed?: boolean
 ): Promise<Item> => {
   const newItem = await prisma.item.update({
     where: { id: item.id },
-    data: { name, details },
+    data: { name, details, completed },
   });
 
   return newItem;

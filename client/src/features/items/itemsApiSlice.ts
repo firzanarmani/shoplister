@@ -1,9 +1,11 @@
 import { apiSlice } from "../../app/api/apiSlice";
+import { listsApiSlice } from "../lists/listsApiSlice";
 
 export interface Item {
   id: string;
   name: string;
   details?: string;
+  completed: boolean;
 }
 
 export const itemsApiSlice = apiSlice.injectEndpoints({
@@ -31,15 +33,18 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
         newListId?: string;
         name?: string;
         details?: string;
+        completed?: boolean;
       }
     >({
-      query: ({ id, newListId, name, details }) => ({
+      // TODO Allow user to move an item to another list
+      query: ({ id, currentListId, newListId, name, details, completed }) => ({
         url: `/items/${id}`,
         method: "PUT",
         body: {
-          listId: newListId,
+          listId: currentListId,
           name,
           details,
+          completed,
         },
       }),
       invalidatesTags: (result, error, args) => {
@@ -64,6 +69,45 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
         { type: "List", id: args.listId },
       ],
     }),
+    setItemCompleted: builder.mutation<
+      { item: Item },
+      {
+        id: string;
+        currentListId: string;
+        completed: boolean;
+      }
+    >({
+      query: ({ id, currentListId, completed }) => ({
+        url: `/items/${id}`,
+        method: "PUT",
+        body: {
+          listId: currentListId,
+          completed,
+        },
+      }),
+      onQueryStarted: async (
+        { id, currentListId, completed },
+        { dispatch, queryFulfilled }
+      ) => {
+        const patchResult = dispatch(
+          listsApiSlice.util.updateQueryData(
+            "getList",
+            { id: currentListId },
+            (draft) => {
+              const item = draft.items.find((item) => item.id === id);
+              if (item !== undefined) {
+                item.completed = completed;
+              }
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+    }),
   }),
 });
 
@@ -71,4 +115,5 @@ export const {
   useAddItemMutation,
   useUpdateItemMutation,
   useDeleteItemMutation,
+  useSetItemCompletedMutation,
 } = itemsApiSlice;

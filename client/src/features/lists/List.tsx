@@ -1,4 +1,4 @@
-import { type ReactElement } from "react";
+import { type ReactElement, type ChangeEventHandler } from "react";
 import { useGetListQuery } from "./listsApiSlice";
 import { Navigate, useParams } from "react-router-dom";
 import {
@@ -11,11 +11,26 @@ import {
 import NewItemModal from "../items/NewItemModal";
 import UpdateListModal from "./UpdateListModal";
 import DeleteListModal from "./DeleteListModal";
-import { type Item, useDeleteItemMutation } from "../items/itemsApiSlice";
+import {
+  type Item,
+  useDeleteItemMutation,
+  useSetItemCompletedMutation,
+} from "../items/itemsApiSlice";
 import UpdateItemModal from "../items/UpdateItemModal";
 
 function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
   const [deleteItem, { isDeleteItemLoading }] = useDeleteItemMutation();
+  const [setItemCompleted, { isSetItemCompletedLoading }] =
+    useSetItemCompletedMutation();
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e): void => {
+    // If there is a change, then updateItem(e.value)
+    void setItemCompleted({
+      id: item.id,
+      currentListId: listId,
+      completed: e.target.checked,
+    });
+  };
 
   return (
     <>
@@ -23,7 +38,6 @@ function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
         <div className="flow-row flex w-full">
           <div className="flex-0">
             <div className="py-2">
-              {/* TODO Completed state toggle */}
               <label
                 htmlFor={`hs-at-with-checkboxes-${item.id}`}
                 className="flex-shrink"
@@ -32,6 +46,8 @@ function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
                   type="checkbox"
                   className="pointer-events-none shrink-0 rounded-full border-gray-200 text-blue-600 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:checked:border-blue-500 dark:checked:bg-blue-500 dark:focus:ring-offset-gray-800"
                   id={`hs-at-with-checkboxes-${item.id}`}
+                  checked={item.completed}
+                  onChange={handleChange}
                 />
                 <span className="sr-only">Checkbox</span>
               </label>

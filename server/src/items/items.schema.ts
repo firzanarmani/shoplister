@@ -4,6 +4,7 @@ export const ItemSchema = z.object({
   id: z.string(),
   name: z.string(),
   details: z.string().optional(),
+  completed: z.boolean(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 
@@ -23,6 +24,7 @@ export const CreateItemSchema = z.object({
     listId: z.string(),
     name: z.string(),
     details: z.string().optional(),
+    completed: z.boolean().optional(),
   }),
 });
 
@@ -42,6 +44,7 @@ export const UpdateItemSchema = z.object({
     listId: z.string(),
     name: z.string().optional(),
     details: z.string().optional(),
+    completed: z.boolean().optional(),
   }),
 });
 
