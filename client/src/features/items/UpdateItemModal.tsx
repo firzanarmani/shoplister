@@ -123,42 +123,47 @@ function UpdateItemModal({
                       </p>
                     ) : null}
                   </div>
-                </div>
-              </div>
-            </div>
 
-            <div id="detailsGroup">
-              <label
-                id="detailsLabel"
-                htmlFor="details"
-                className="mb-2 block text-sm dark:text-white"
-              >
-                Details
-              </label>
-              <div id="detailsInputGroup" className="relative">
-                <input
-                  id="detailsInput"
-                  type="details"
-                  className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                  placeholder="Optional"
-                  aria-describedby="title-error"
-                  aria-invalid={errors.title !== undefined ? "true" : "false"}
-                  {...register("details")}
-                />
-                <div
-                  id="detailsErrorIcon"
-                  className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-red-600"
-                >
-                  {errors.details !== undefined ? (
-                    <IconExclamationCircle size={16} />
-                  ) : null}
+                  <div id="detailsGroup">
+                    <label
+                      id="detailsLabel"
+                      htmlFor="details"
+                      className="mb-2 block text-sm dark:text-white"
+                    >
+                      Details
+                    </label>
+                    <div id="detailsInputGroup" className="relative">
+                      <input
+                        id="detailsInput"
+                        type="details"
+                        className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                        placeholder="Optional"
+                        aria-describedby="title-error"
+                        aria-invalid={
+                          errors.title !== undefined ? "true" : "false"
+                        }
+                        {...register("details")}
+                      />
+                      <div
+                        id="detailsErrorIcon"
+                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-red-600"
+                      >
+                        {errors.details !== undefined ? (
+                          <IconExclamationCircle size={16} />
+                        ) : null}
+                      </div>
+                    </div>
+                    {errors.details !== undefined ? (
+                      <p
+                        id="detailsErrors"
+                        className="mt-2 text-xs text-red-600"
+                      >
+                        {errors.details.message}
+                      </p>
+                    ) : null}
+                  </div>
                 </div>
               </div>
-              {errors.details !== undefined ? (
-                <p id="detailsErrors" className="mt-2 text-xs text-red-600">
-                  {errors.details.message}
-                </p>
-              ) : null}
             </div>
 
             <div className="flex items-center justify-end gap-x-2 border-t bg-gray-50 px-4 py-3 dark:border-gray-700 dark:bg-gray-800">
