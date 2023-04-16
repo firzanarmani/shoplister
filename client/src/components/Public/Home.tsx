@@ -1,8 +1,8 @@
 import { type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
-function Public(): ReactElement {
+function Home(): ReactElement {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
 
@@ -46,4 +46,4 @@ function Public(): ReactElement {
   );
 }
 
-export default Public;
+export default Home;
