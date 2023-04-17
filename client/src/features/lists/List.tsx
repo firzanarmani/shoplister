@@ -19,9 +19,8 @@ import {
 import UpdateItemModal from "../items/UpdateItemModal";
 
 function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
-  const [deleteItem, { isDeleteItemLoading }] = useDeleteItemMutation();
-  const [setItemCompleted, { isSetItemCompletedLoading }] =
-    useSetItemCompletedMutation();
+  const [deleteItem] = useDeleteItemMutation();
+  const [setItemCompleted] = useSetItemCompletedMutation();
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e): void => {
     // If there is a change, then updateItem(e.value)

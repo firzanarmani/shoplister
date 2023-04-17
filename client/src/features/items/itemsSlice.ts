@@ -1,1 +1,0 @@
-// TODO Selected item id
