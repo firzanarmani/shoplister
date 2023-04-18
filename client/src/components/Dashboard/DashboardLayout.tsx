@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import DashboardHeader from "./DashboardHeader";
-import DashboardFooter from "./DashboardFooter";
 import { type ReactElement } from "react";
 import DashboardSidebar from "./DashboardSidebar";
 
@@ -12,7 +11,6 @@ function DashboardLayout(): ReactElement {
       <div className="w-full px-4 pt-10 sm:px-6 md:px-8 lg:pl-72">
         <Outlet />
       </div>
-      <DashboardFooter />
     </div>
   );
 }
