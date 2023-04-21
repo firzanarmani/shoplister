@@ -1,4 +1,4 @@
-import { type List, type User } from "@prisma/client";
+import { type Item, type List, type User } from "@prisma/client";
 import createHttpError from "http-errors";
 
 import prisma from "@/libs/prisma";
@@ -6,21 +6,24 @@ import prisma from "@/libs/prisma";
 const getLists = async (user: User): Promise<List[]> => {
   const lists = await prisma.list.findMany({
     where: {
-      user,
+      owner: user,
     },
-    include: { items: true },
+    include: { owner: true, users: true },
   });
 
   return lists;
 };
 
-const getListById = async (user: User, id: string): Promise<List> => {
+const getListById = async (
+  user: User,
+  id: string
+): Promise<List & { owner: User; users: User[]; items: Item[] }> => {
   const list = await prisma.list.findFirst({
     where: {
       id,
-      user,
+      ownerId: user.id,
     },
-    include: { items: true },
+    include: { items: true, owner: true, users: true },
   });
 
   if (list === null) {
@@ -36,25 +39,51 @@ const getListById = async (user: User, id: string): Promise<List> => {
 const createList = async (user: User, name: string): Promise<List> => {
   const list = await prisma.list.create({
     data: {
-      user: {
+      owner: {
         connect: { id: user.id },
       },
       name,
     },
     include: {
-      items: true,
+      owner: true,
+      users: true,
     },
   });
 
   return list;
 };
 
-const updateList = async (list: List, name?: string): Promise<List> => {
+const updateList = async (
+  owner: User,
+  listId: string,
+  name?: string,
+  users?: Array<{ email: string }>
+): Promise<List> => {
+  const list = await ListsService.getListById(owner, listId);
+
+  const addUsers: Array<{ email: string }> = [];
+  const removeUsers: Array<{ email: string }> = [];
+
+  users?.forEach((user) => {
+    if (
+      list.users.filter((existingUser) => existingUser.email === user.email)
+        .length === 0
+    ) {
+      // If userId is not connected (i.e. not in users), connect
+      addUsers.push(user);
+    } else {
+      // If userId is already connected (i.e. in users), disconnect
+      removeUsers.push(user);
+    }
+  });
+
   const updatedList = await prisma.list.update({
-    where: { id: list.id },
-    data: { name },
+    where: { id: listId },
+    data: { name, users: { connect: addUsers, disconnect: removeUsers } },
     include: {
       items: true,
+      owner: true,
+      users: true,
     },
   });
 

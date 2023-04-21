@@ -18,6 +18,8 @@ model User {
 
   inbox Item[] // To quickly add items without adding them into any particular lists
   lists List[]
+
+  sharedLists List[] @relation("user_list")
   // TgAccount    TgAccount?
 }
 
@@ -63,8 +65,10 @@ model List {
 
   items Item[]
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String
 
-  @@index([userId])
+  users User[] @relation("user_list")
+
+  @@index([ownerId])
 }

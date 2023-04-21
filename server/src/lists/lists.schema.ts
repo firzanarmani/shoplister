@@ -64,6 +64,7 @@ export const UpdateListSchema = z.object({
   }),
   body: z.object({
     name: z.string().optional(),
+    userEmails: z.array(z.object({ email: z.string() })).optional(),
   }),
 });
 
