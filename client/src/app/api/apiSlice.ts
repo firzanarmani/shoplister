@@ -35,7 +35,11 @@ const baseQueryWithReauth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
 
   // 401 Unauthorized - Access token has expired (verifyJWT fails)
-  if (result.error !== undefined && result.error.status === 401) {
+  if (
+    result.error !== undefined &&
+    result.error.status === 401 &&
+    (result.error.data as { message: string }).message === "Invalid token"
+  ) {
     // Query /refresh to try and get a new access token
     const refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
 
