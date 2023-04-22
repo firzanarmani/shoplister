@@ -6,7 +6,14 @@ import prisma from "@/libs/prisma";
 const getLists = async (user: User): Promise<List[]> => {
   const lists = await prisma.list.findMany({
     where: {
-      owner: user,
+      OR: [
+        { owner: user },
+        {
+          users: {
+            some: user,
+          },
+        },
+      ],
     },
     include: { owner: true, users: true },
   });
@@ -21,7 +28,14 @@ const getListById = async (
   const list = await prisma.list.findFirst({
     where: {
       id,
-      ownerId: user.id,
+      OR: [
+        { ownerId: user.id },
+        {
+          users: {
+            some: user,
+          },
+        },
+      ],
     },
     include: { items: true, owner: true, users: true },
   });
