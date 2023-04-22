@@ -104,7 +104,18 @@ const updateList = async (
   return updatedList;
 };
 
-const deleteList = async (list: List): Promise<List> => {
+const deleteList = async (
+  user: User,
+  list: List & { owner: User; users: User[]; items: Item[] }
+): Promise<List> => {
+  console.log(list);
+  if (list.owner.id !== user.id) {
+    throw createHttpError(
+      403,
+      "You do not have permission to delete this list"
+    );
+  }
+
   const deletedList = await prisma.list.delete({
     where: { id: list.id },
   });

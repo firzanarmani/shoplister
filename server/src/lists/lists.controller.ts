@@ -87,7 +87,7 @@ const deleteList = asyncHandler<DeleteListParams>(async (req, res, next) => {
 
     const list = await ListsService.getListById(user, req.params.id);
 
-    const deletedList = await ListsService.deleteList(list);
+    const deletedList = await ListsService.deleteList(user, list);
 
     res.status(200).json({ deletedList });
   } catch (error) {
