@@ -7,11 +7,14 @@ import { apiSlice } from "../../app/api/apiSlice";
 import { type RootState } from "../../app/store";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { type Item } from "../items/itemsApiSlice";
+import { type User } from "../users/usersApiSlice";
 
 export interface List {
   id: string;
   name: string;
   items: Item[];
+  owner: User;
+  users: User[];
 }
 
 const listsAdapter = createEntityAdapter<List>({});
@@ -65,18 +68,20 @@ export const listsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "List", id: "LIST" }],
     }),
-    updateList: builder.mutation<{ list: List }, { id: string; name?: string }>(
-      {
-        query: ({ id, name }) => ({
-          url: `/lists/${id}`,
-          method: "PUT",
-          body: {
-            name,
-          },
-        }),
-        invalidatesTags: (result, error, arg) => [{ type: "List", id: arg.id }],
-      }
-    ),
+    updateList: builder.mutation<
+      { list: List },
+      { id: string; name?: string; users?: Array<{ email: string }> }
+    >({
+      query: ({ id, name, users }) => ({
+        url: `/lists/${id}`,
+        method: "PUT",
+        body: {
+          name,
+          userEmails: users,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: "List", id: arg.id }],
+    }),
     deleteList: builder.mutation<List, { id: string }>({
       query: ({ id }) => ({
         url: `/lists/${id}`,

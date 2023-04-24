@@ -17,6 +17,7 @@ import {
   useSetItemCompletedMutation,
 } from "../items/itemsApiSlice";
 import UpdateItemModal from "../items/UpdateItemModal";
+import useAuth from "../../hooks/useAuth";
 
 function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
   const [deleteItem] = useDeleteItemMutation();
@@ -120,6 +121,7 @@ function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
 
 function List(): ReactElement {
   const { id } = useParams();
+  const currUser = useAuth();
 
   if (id === undefined) {
     return <Navigate to="/dashboard" />;
@@ -165,41 +167,43 @@ function List(): ReactElement {
 
           <div>
             <div className="inline-flex gap-x-2">
-              <div className="hs-dropdown relative inline-flex [--placement:bottom-right]">
-                <button
-                  id="hs-list-options-dropdown"
-                  type="button"
-                  className="inline-flex items-center justify-center gap-2 rounded-md border bg-white px-3 py-2 align-middle text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 dark:hover:bg-slate-800 dark:hover:text-white dark:focus:ring-offset-gray-800"
-                >
-                  <IconDotsVertical size={16} />
-                </button>
-                <div
-                  className="hs-dropdown-menu duration z-10 mt-2 hidden min-w-[12rem] divide-y divide-gray-200 rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] hs-dropdown-open:opacity-100 dark:divide-gray-700 dark:border dark:border-gray-700 dark:bg-gray-800"
-                  aria-labelledby="hs-as-table-table-export-dropdown"
-                >
-                  <div className="py-2 first:pt-0 last:pb-0">
-                    <span className="block px-3 py-2 text-xs font-medium uppercase text-gray-400 dark:text-gray-600">
-                      Options
-                    </span>
-                    <button
-                      type="button"
-                      className="flex w-full items-center gap-x-3 rounded-md px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                      data-hs-overlay="#hs-update-list-modal"
-                    >
-                      <IconPencil size={16} />
-                      Change List Title
-                    </button>
-                    <button
-                      type="button"
-                      className="flex w-full items-center gap-x-3 rounded-md px-3 py-2 text-sm text-red-600 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-red-500 dark:hover:bg-gray-700 dark:hover:text-red-400"
-                      data-hs-overlay="#hs-delete-list-modal"
-                    >
-                      <IconTrash size={16} />
-                      Delete List
-                    </button>
+              {currUser.email === list.owner.email ? (
+                <div className="hs-dropdown relative inline-flex [--placement:bottom-right]">
+                  <button
+                    id="hs-list-options-dropdown"
+                    type="button"
+                    className="inline-flex items-center justify-center gap-2 rounded-md border bg-white px-3 py-2 align-middle text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 dark:hover:bg-slate-800 dark:hover:text-white dark:focus:ring-offset-gray-800"
+                  >
+                    <IconDotsVertical size={16} />
+                  </button>
+                  <div
+                    className="hs-dropdown-menu duration z-10 mt-2 hidden min-w-[12rem] divide-y divide-gray-200 rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] hs-dropdown-open:opacity-100 dark:divide-gray-700 dark:border dark:border-gray-700 dark:bg-gray-800"
+                    aria-labelledby="hs-as-table-table-export-dropdown"
+                  >
+                    <div className="py-2 first:pt-0 last:pb-0">
+                      <span className="block px-3 py-2 text-xs font-medium uppercase text-gray-400 dark:text-gray-600">
+                        Options
+                      </span>
+                      <button
+                        type="button"
+                        className="flex w-full items-center gap-x-3 rounded-md px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                        data-hs-overlay="#hs-update-list-modal"
+                      >
+                        <IconPencil size={16} />
+                        Edit List Options
+                      </button>
+                      <button
+                        type="button"
+                        className="flex w-full items-center gap-x-3 rounded-md px-3 py-2 text-sm text-red-600 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-red-500 dark:hover:bg-gray-700 dark:hover:text-red-400"
+                        data-hs-overlay="#hs-delete-list-modal"
+                      >
+                        <IconTrash size={16} />
+                        Delete List
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : null}
 
               <button
                 type="button"
@@ -219,7 +223,7 @@ function List(): ReactElement {
           ))}
         </div>
 
-        <UpdateListModal id={list.id} originalTitle={list.name} />
+        <UpdateListModal list={list} />
         <DeleteListModal id={list.id} />
         <NewItemModal listId={list.id} />
       </div>
