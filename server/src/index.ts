@@ -9,6 +9,7 @@ import itemsRouter from "@/items/items.routes";
 import listsRouter from "@/lists/lists.routes";
 import { errorHandler } from "@/middlewares/errorHandler";
 import { logger } from "@/middlewares/logger";
+import usersRouter from "@/users/users.routes";
 import validateEnv from "@/utils/validateEnv";
 
 dotenv.config();
@@ -28,6 +29,7 @@ app.use(cookieParser());
 app.use("/v1/auth", authRouter);
 app.use("/v1/lists", listsRouter);
 app.use("/v1/items", itemsRouter);
+app.use("/v1/users", usersRouter);
 
 app.use(errorHandler);
 
