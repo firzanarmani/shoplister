@@ -15,8 +15,14 @@ module.exports = {
     sourceType: "module",
     project: "./tsconfig.json",
   },
-  plugins: ["react"],
-  rules: {},
+  plugins: ["react", "simple-import-sort", "import"],
+  rules: {
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+  },
   settings: {
     react: {
       version: "detect",
