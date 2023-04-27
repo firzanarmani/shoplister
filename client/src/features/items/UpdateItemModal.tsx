@@ -4,7 +4,10 @@ import { type ReactElement, useRef } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { type Item, useUpdateItemMutation } from "@/features/items/itemsApiSlice";
+import {
+  type Item,
+  useUpdateItemMutation,
+} from "@/features/items/itemsApiSlice";
 
 const schema = z.object({
   title: z.string().min(1, "Cannot be empty"),

@@ -18,7 +18,7 @@ import useAuth from "@/hooks/useAuth";
 function UserNav(): ReactElement {
   const user = useAuth();
 
-  const [logout, { isSuccess }] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
 
   return (
     <DropdownMenu>
