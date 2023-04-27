@@ -5,15 +5,18 @@ import {
   IconPlus,
   IconReload,
 } from "@tabler/icons-react";
-import { type ReactElement } from "react";
+import { type HTMLAttributes, type ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetListsQuery } from "@/features/lists/listsApiSlice";
 import useAuth from "@/hooks/useAuth";
+import { cn } from "@/utils/cn";
 
-function DashboardSidebar(): ReactElement {
+interface SidebarProps extends HTMLAttributes<HTMLDivElement> {}
+
+function DashboardSidebar({ className }: SidebarProps): ReactElement {
   const { email } = useAuth();
   const {
     data: lists,
@@ -94,22 +97,28 @@ function DashboardSidebar(): ReactElement {
   }
 
   return (
-    <div className="space-y-4 py-4 pb-12">
-      <div id="sidebar-section" className="px-4 py-2">
-        <div
-          id="sidebar-section-header"
-          className="mb-2 flex flex-row justify-between"
-        >
-          <NavLink id="sidebar-section-header-label" to="/dashboard/lists" end>
-            <Button variant="link" size={null}>
-              <h2 className="px-2 text-lg font-semibold tracking-tight">
-                Lists
-              </h2>
-            </Button>
-          </NavLink>
-          {listButton}
+    <div className={cn("pb-12", className)}>
+      <div className="space-y-4 py-4">
+        <div id="sidebar-section" className="px-4 py-2">
+          <div
+            id="sidebar-section-header"
+            className="mb-2 flex flex-row justify-between"
+          >
+            <NavLink
+              id="sidebar-section-header-label"
+              to="/dashboard/lists"
+              end
+            >
+              <Button variant="link" size={null}>
+                <h2 className="px-2 text-lg font-semibold tracking-tight">
+                  Lists
+                </h2>
+              </Button>
+            </NavLink>
+            {listButton}
+          </div>
+          {listContent}
         </div>
-        {listContent}
       </div>
     </div>
   );
