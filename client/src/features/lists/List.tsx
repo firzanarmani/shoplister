@@ -1,23 +1,24 @@
-import { type ReactElement, type ChangeEventHandler } from "react";
-import { useGetListQuery } from "./listsApiSlice";
-import { Navigate, useParams } from "react-router-dom";
 import {
-  IconPlus,
-  IconDotsVertical,
-  IconTrash,
-  IconPencil,
   IconDots,
+  IconDotsVertical,
+  IconPencil,
+  IconPlus,
+  IconTrash,
 } from "@tabler/icons-react";
-import NewItemModal from "../items/NewItemModal";
-import UpdateListModal from "./UpdateListModal";
-import DeleteListModal from "./DeleteListModal";
+import { type ChangeEventHandler, type ReactElement } from "react";
+import { Navigate, useParams } from "react-router-dom";
+
 import {
   type Item,
   useDeleteItemMutation,
   useSetItemCompletedMutation,
-} from "../items/itemsApiSlice";
-import UpdateItemModal from "../items/UpdateItemModal";
-import useAuth from "../../hooks/useAuth";
+} from "@/features/items/itemsApiSlice";
+import NewItemModal from "@/features/items/NewItemModal";
+import UpdateItemModal from "@/features/items/UpdateItemModal";
+import DeleteListModal from "@/features/lists/DeleteListModal";
+import { useGetListQuery } from "@/features/lists/listsApiSlice";
+import UpdateListModal from "@/features/lists/UpdateListModal";
+import useAuth from "@/hooks/useAuth";
 
 function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
   const [deleteItem] = useDeleteItemMutation();
@@ -74,7 +75,7 @@ function Row({ item, listId }: { item: Item; listId: string }): ReactElement {
                     <IconDots size={16} />
                   </button>
                   <div
-                    className="hs-dropdown-menu duration z-10 mt-2 hidden min-w-[10rem] divide-y divide-gray-200 rounded-lg bg-white p-2 opacity-0 shadow-2xl transition-[opacity,margin] hs-dropdown-open:opacity-100 dark:divide-gray-700 dark:border dark:border-gray-700 dark:bg-gray-800"
+                    className="hs-dropdown-menu duration hs-dropdown-open:opacity-100 z-10 mt-2 hidden min-w-[10rem] divide-y divide-gray-200 rounded-lg bg-white p-2 opacity-0 shadow-2xl transition-[opacity,margin] dark:divide-gray-700 dark:border dark:border-gray-700 dark:bg-gray-800"
                     aria-labelledby="hs-table-dropdown-1"
                   >
                     <div className="py-2 first:pt-0 last:pb-0">
@@ -177,7 +178,7 @@ function List(): ReactElement {
                     <IconDotsVertical size={16} />
                   </button>
                   <div
-                    className="hs-dropdown-menu duration z-10 mt-2 hidden min-w-[12rem] divide-y divide-gray-200 rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] hs-dropdown-open:opacity-100 dark:divide-gray-700 dark:border dark:border-gray-700 dark:bg-gray-800"
+                    className="hs-dropdown-menu duration hs-dropdown-open:opacity-100 z-10 mt-2 hidden min-w-[12rem] divide-y divide-gray-200 rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] dark:divide-gray-700 dark:border dark:border-gray-700 dark:bg-gray-800"
                     aria-labelledby="hs-as-table-table-export-dropdown"
                   >
                     <div className="py-2 first:pt-0 last:pb-0">

@@ -1,5 +1,5 @@
-import { apiSlice } from "../../app/api/apiSlice";
-import { listsApiSlice } from "../lists/listsApiSlice";
+import { apiSlice } from "@/app/api/apiSlice";
+import { listsApiSlice } from "@/features/lists/listsApiSlice";
 
 export interface Item {
   id: string;

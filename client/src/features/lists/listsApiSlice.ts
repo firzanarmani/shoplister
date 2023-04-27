@@ -1,13 +1,14 @@
 import {
-  type EntityState,
   createEntityAdapter,
   createSelector,
+  type EntityState,
 } from "@reduxjs/toolkit";
-import { apiSlice } from "../../app/api/apiSlice";
-import { type RootState } from "../../app/store";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
-import { type Item } from "../items/itemsApiSlice";
-import { type User } from "../users/usersApiSlice";
+
+import { apiSlice } from "@/app/api/apiSlice";
+import { type RootState } from "@/app/store";
+import { type Item } from "@/features/items/itemsApiSlice";
+import { type User } from "@/features/users/usersApiSlice";
 
 export interface List {
   id: string;

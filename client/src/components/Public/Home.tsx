@@ -1,6 +1,7 @@
 import { type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+
+import useAuth from "@/hooks/useAuth";
 
 function Home(): ReactElement {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function Home(): ReactElement {
               type="button"
               className="inline-flex items-center justify-center gap-2 rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
               onClick={() => {
-                navigate("/register");
+                navigate("/auth/register");
               }}
             >
               Register
@@ -34,7 +35,7 @@ function Home(): ReactElement {
               type="button"
               className="inline-flex items-center justify-center gap-2 rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
               onClick={() => {
-                navigate("/login");
+                navigate("/auth/login");
               }}
             >
               Log in

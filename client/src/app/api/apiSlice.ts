@@ -1,12 +1,13 @@
 import {
-  type FetchArgs,
-  createApi,
-  fetchBaseQuery,
   type BaseQueryFn,
+  createApi,
+  type FetchArgs,
+  fetchBaseQuery,
   type FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
-import { type RootState } from "../store";
-import { logout, setCredentials } from "../../features/auth/authSlice";
+
+import { type RootState } from "@/app/store";
+import { logout, setCredentials } from "@/features/auth/authSlice";
 
 // https://redux-toolkit.js.org/rtk-query/usage/examples#dispatching-an-action-to-set-the-user-state
 // https://redux-toolkit.js.org/rtk-query/api/fetchBaseQuery#setting-default-headers-on-requests

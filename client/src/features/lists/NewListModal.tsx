@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconExclamationCircle, IconX } from "@tabler/icons-react";
-import { useRef, type ReactElement } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { type ReactElement,useRef } from "react";
+import { type SubmitHandler,useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { useAddNewListMutation } from "./listsApiSlice";
+
+import { useAddNewListMutation } from "@/features/lists/listsApiSlice";
 
 const schema = z.object({
   title: z.string().min(1, "Cannot be empty"),
