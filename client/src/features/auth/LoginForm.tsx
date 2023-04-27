@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IconAlertCircle, IconLoader } from "@tabler/icons-react";
 import { type ReactElement } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 import { useAppDispatch } from "@/app/hooks";
@@ -31,6 +31,8 @@ type FormData = z.infer<typeof schema>;
 function LoginForm(): ReactElement {
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
+
   const [login, { isLoading }] = useLoginMutation();
 
   const {
@@ -53,7 +55,7 @@ function LoginForm(): ReactElement {
       }).unwrap();
       dispatch(setCredentials({ accessToken }));
       reset();
-      redirect("/dashboard");
+      navigate("/dashboard");
     } catch (error) {
       let errorMessage = JSON.stringify(error);
 
