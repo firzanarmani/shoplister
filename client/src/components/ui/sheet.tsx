@@ -1,15 +1,15 @@
 import * as SheetPrimitive from "@radix-ui/react-dialog";
-import { type VariantProps, cva } from "class-variance-authority";
-
-import { cn } from "../../utils/cn";
-import {
-  type ReactElement,
-  forwardRef,
-  type ElementRef,
-  type ComponentPropsWithoutRef,
-  type HTMLAttributes,
-} from "react";
 import { IconX } from "@tabler/icons-react";
+import { cva, type VariantProps } from "class-variance-authority";
+import {
+  type ComponentPropsWithoutRef,
+  type ElementRef,
+  forwardRef,
+  type HTMLAttributes,
+  type ReactElement,
+} from "react";
+
+import { cn } from "@/utils/cn";
 
 const Sheet = SheetPrimitive.Root;
 
@@ -225,10 +225,10 @@ SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
 export {
   Sheet,
-  SheetTrigger,
   SheetContent,
-  SheetHeader,
-  SheetFooter,
-  SheetTitle,
   SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
 };

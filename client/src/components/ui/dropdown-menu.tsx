@@ -1,12 +1,12 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-
-import { cn } from "../../utils/cn";
+import { IconCheck, IconChevronRight, IconCircle } from "@tabler/icons-react";
 import {
   type ComponentPropsWithoutRef,
   type ElementRef,
   forwardRef,
 } from "react";
-import { IconCheck, IconChevronRight, IconCircle } from "@tabler/icons-react";
+
+import { cn } from "@/utils/cn";
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
@@ -172,17 +172,17 @@ DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
 
 export {
   DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuCheckboxItem,
-  DropdownMenuRadioItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuContent,
   DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-  DropdownMenuRadioGroup,
+  DropdownMenuTrigger,
 };
